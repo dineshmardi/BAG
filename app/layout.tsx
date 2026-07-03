@@ -1,8 +1,17 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { BRAND } from "@/constants/brand";
+
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Geist, Inter, Playfair_Display } from "next/font/google";
+
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,8 +24,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Luxe Bags Store",
-  description: "Premium Luxury Bags & Handbags",
+  title: BRAND.title,
+  description: BRAND.description,
 };
 
 export default function RootLayout({
@@ -25,13 +34,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={cn("font-sans", geist.variable)}
+      suppressHydrationWarning
+    >
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         <Header />
 
-        <main>
-          {children}
-        </main>
+        <main>{children}</main>
 
         <Footer />
       </body>
