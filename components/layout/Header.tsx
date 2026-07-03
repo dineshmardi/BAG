@@ -1,23 +1,9 @@
-import Container from "@/components/ui/Container";
-import { BRAND } from "@/constants/brand";
+import { Navbar } from "@/components/navigation/navbar";
+
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--background)]">
-      <Container>
-        <div className="flex h-16 items-center justify-between">
-          <h1 className="text-2xl font-bold">
-            {BRAND.name}
-          </h1>
-
-          <nav className="hidden gap-8 md:flex">
-            <a href="#">Home</a>
-            <a href="#">Shop</a>
-            <a href="#">Collections</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-          </nav>
-        </div>
-      </Container>
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <Navbar />
     </header>
   );
 }

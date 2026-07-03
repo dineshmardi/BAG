@@ -1,5 +1,6 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AnnouncementBar from "@/components/layout/announcement-bar";
 import { BRAND } from "@/constants/brand";
 
 import type { Metadata } from "next";
@@ -40,6 +41,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
+        <AnnouncementBar />
+
         <Header />
 
         <main>{children}</main>
