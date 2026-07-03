@@ -1,9 +1,11 @@
+import Button from "@/components/ui/Button";
+
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <h1 className="text-5xl font-bold">
-        Luxe Bags Store
-      </h1>
+    <main className="flex min-h-screen items-center justify-center">
+      <Button>
+        Shop Now
+      </Button>
     </main>
   );
 }
