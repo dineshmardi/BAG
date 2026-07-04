@@ -41,13 +41,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
-        <AnnouncementBar />
-
-        <Header />
-
-        <main>{children}</main>
-
-        <Footer />
+        {children}
       </body>
     </html>
   );

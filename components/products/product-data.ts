@@ -1,0 +1,38 @@
+export const products = [
+  {
+    id: 1,
+    title: "Classic Leather Tote",
+    price: 4999,
+    image: "/images/products/bag1.jpg",
+    rating: 4.8,
+    reviews: 128,
+    badge: "Best Seller",
+  },
+  {
+    id: 2,
+    title: "Luxury Handbag",
+    price: 6999,
+    image: "/images/products/bag2.jpg",
+    rating: 4.9,
+    reviews: 212,
+    badge: "New",
+  },
+  {
+    id: 3,
+    title: "Premium Office Bag",
+    price: 5499,
+    image: "/images/products/bag3.jpg",
+    rating: 4.7,
+    reviews: 95,
+    badge: "Popular",
+  },
+  {
+    id: 4,
+    title: "Elegant Shoulder Bag",
+    price: 5999,
+    image: "/images/products/bag4.jpg",
+    rating: 4.9,
+    reviews: 176,
+    badge: "Trending",
+  },
+];

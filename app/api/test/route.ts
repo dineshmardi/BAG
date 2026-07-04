@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { connectDB } from "@/lib/mongodb";
 
 export async function GET() {
@@ -10,14 +11,16 @@ export async function GET() {
       message: "MongoDB Connected Successfully!",
     });
   } catch (error) {
-    console.error("MongoDB Error:", error);
+    console.error(error);
 
     return NextResponse.json(
       {
         success: false,
-        message: "MongoDB Connection Failed",
+        message: "Database Connection Failed",
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }

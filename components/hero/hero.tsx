@@ -1,24 +1,29 @@
+import { HeroBackground } from "./hero-background";
 import { HeroButtons } from "./hero-buttons";
 import { HeroContent } from "./hero-content";
 import { HeroImage } from "./hero-image";
 import { ScrollIndicator } from "./scroll-indicator";
 
 export function Hero() {
-  return (
-    <section className="relative overflow-hidden">
-      <div className="mx-auto grid min-h-[calc(100vh-104px)] max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2">
-        <div>
-          <HeroContent />
+    return (
+        <section className="relative overflow-hidden">
+            <HeroBackground />
 
-          <div className="mt-8">
-            <HeroButtons />
-          </div>
-        </div>
+            <div className="mx-auto grid min-h-[calc(100vh-104px)] max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-12">
+                <div className="lg:col-span-5">
+                    <HeroContent />
 
-        <HeroImage />
-      </div>
+                    <div className="mt-8">
+                        <HeroButtons />
+                    </div>
+                </div>
 
-      <ScrollIndicator />
-    </section>
-  );
+                <div className="lg:col-span-7">
+                    <HeroImage />
+                </div>
+            </div>
+
+            <ScrollIndicator />
+        </section>
+    );
 }
