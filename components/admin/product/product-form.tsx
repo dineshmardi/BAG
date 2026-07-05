@@ -1,4 +1,5 @@
 "use client";
+import { ImageUpload } from "./image-upload";
 import { fetchWithTimeout } from "@/lib/fetch-with-timeout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -33,6 +34,8 @@ export function ProductForm({
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -46,6 +49,8 @@ export function ProductForm({
       image: product?.images?.[0] ?? "",
     },
   });
+
+  const image = watch("image");
   useEffect(() => {
     if (product) {
       reset({
@@ -197,12 +202,19 @@ export function ProductForm({
       </div>
 
       <div>
-        <Label htmlFor="image">Image URL</Label>
+        <Label>Product Image</Label>
 
-        <Input
-          id="image"
-          {...register("image")}
-        />
+        <div className="mt-2">
+          <ImageUpload
+            value={image}
+            onChange={(url) =>
+              setValue("image", url, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+          />
+        </div>
 
         <p className="mt-1 text-sm text-red-500">
           {errors.image?.message}
