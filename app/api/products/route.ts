@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { connectDB } from "@/lib/mongodb";
 import { createProduct, getProducts } from "@/lib/services/product.service";
+import { productSchema } from "@/lib/validations/product";
 
 export async function GET() {
   try {
@@ -20,13 +21,15 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     await connectDB();
 
     const body = await request.json();
 
-    const product = await createProduct(body);
+    const validatedData = productSchema.parse(body);
+
+    const product = await createProduct(validatedData);
 
     return NextResponse.json(product, {
       status: 201,
@@ -36,7 +39,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { message: "Failed to create product" },
-      { status: 500 }
+      { status: 400 }
     );
   }
 }

@@ -1,5 +1,6 @@
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Toaster } from "sonner";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 import AnnouncementBar from "@/components/layout/announcement-bar";
 import { BRAND } from "@/constants/brand";
 
@@ -42,6 +43,11 @@ export default function RootLayout({
     >
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         {children}
+
+        <Toaster
+          richColors
+          position="top-right"
+        />
       </body>
     </html>
   );

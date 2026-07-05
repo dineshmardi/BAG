@@ -1,15 +1,18 @@
-import { ProductForm } from "@/components/admin/product-form";
+import { ProductDashboard } from "@/components/admin/product/product-dashboard";
+import { ProductForm } from "@/components/admin/product/product-form";
+import { ProductList } from "@/components/admin/product/product-list";
 
-export default function AdminProductsPage() {
+import { connectDB } from "@/lib/mongodb";
+import { getProducts } from "@/lib/services/product.service";
+
+export default async function AdminProductsPage() {
+  await connectDB();
+
+  const products = await getProducts();
+
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="mb-8 text-4xl font-bold">
-        Product Management
-      </h1>
-
-      <div className="rounded-2xl border bg-white p-8 shadow-sm">
-        <ProductForm />
-      </div>
-    </main>
-  );
+  <ProductDashboard
+    products={products}
+  />
+);
 }
