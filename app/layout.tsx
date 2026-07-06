@@ -2,6 +2,7 @@ import { Toaster } from "sonner";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import AnnouncementBar from "@/components/layout/announcement-bar";
+import { AuthProvider } from "@/components/providers/session-provider";
 import { BRAND } from "@/constants/brand";
 
 import type { Metadata } from "next";
@@ -42,7 +43,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
 
         <Toaster
           richColors

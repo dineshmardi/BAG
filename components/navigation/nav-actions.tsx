@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 import {
   Heart,
   Search,
@@ -13,6 +14,8 @@ import { useCartStore } from "@/stores/cart-store";
 
 export function NavActions() {
   const items = useCartStore((state) => state.items);
+
+  const { data: session } = useSession();
 
   const cartCount = items.reduce(
     (total, item) => total + item.quantity,
@@ -54,13 +57,24 @@ export function NavActions() {
         </Button>
       </Link>
 
-      <Button
-        variant="ghost"
-        size="icon"
-        aria-label="Account"
-      >
-        <User className="h-5 w-5" />
-      </Button>
+      {session ? (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            signOut({
+              callbackUrl: "/login",
+            })
+          }
+        >
+          Logout
+        </Button>
+      ) : (
+        <Link href="/login">
+          <Button variant="ghost">
+            Login
+          </Button>
+        </Link>
+      )}
     </div>
   );
 }
