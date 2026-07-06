@@ -1,3 +1,6 @@
+"use client";
+
+import Link from "next/link";
 import {
   Heart,
   Search,
@@ -6,23 +9,56 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/stores/cart-store";
 
 export function NavActions() {
+  const items = useCartStore((state) => state.items);
+
+  const cartCount = items.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   return (
     <div className="flex items-center gap-2">
-      <Button variant="ghost" size="icon" aria-label="Search">
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Search"
+      >
         <Search className="h-5 w-5" />
       </Button>
 
-      <Button variant="ghost" size="icon" aria-label="Wishlist">
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Wishlist"
+      >
         <Heart className="h-5 w-5" />
       </Button>
 
-      <Button variant="ghost" size="icon" aria-label="Cart">
-        <ShoppingBag className="h-5 w-5" />
-      </Button>
+      <Link href="/cart">
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Cart"
+          className="relative"
+        >
+          <ShoppingBag className="h-5 w-5" />
 
-      <Button variant="ghost" size="icon" aria-label="Account">
+          {cartCount > 0 && (
+            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+              {cartCount}
+            </span>
+          )}
+        </Button>
+      </Link>
+
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Account"
+      >
         <User className="h-5 w-5" />
       </Button>
     </div>

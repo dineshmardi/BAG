@@ -1,7 +1,11 @@
 import { ProductCard } from "./product-card";
-import { products } from "./product-data";
+import { connectDB } from "@/lib/mongodb";
+import { getProducts } from "@/lib/services/product.service";
 
-export function FeaturedProducts() {
+export async function FeaturedProducts() {
+  await connectDB();
+
+  const products = await getProducts();
   return (
     <section className="py-24 bg-[#faf9f6]">
       <div className="mx-auto max-w-7xl px-6">
@@ -23,13 +27,14 @@ export function FeaturedProducts() {
         <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
           {products.map((product) => (
             <ProductCard
-              key={product.id}
+              key={product._id}
+              id={product._id}
               title={product.title}
-              image={product.image}
+              image={product.images[0]}
               price={product.price}
               rating={product.rating}
               reviews={product.reviews}
-              badge={product.badge}
+              badge={product.featured ? "Featured" : "New"}
             />
           ))}
         </div>
