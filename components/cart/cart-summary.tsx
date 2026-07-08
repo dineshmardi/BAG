@@ -51,12 +51,15 @@ export function CartSummary() {
         </div>
       </div>
 
-      <Button
-        className="mt-8 w-full"
-        size="lg"
-      >
-        Proceed to Checkout
-      </Button>
+      <Link href="/checkout">
+        <Button
+          className="mt-8 w-full"
+          size="lg"
+          disabled={items.length === 0}
+        >
+          Proceed to Checkout
+        </Button>
+      </Link>
 
       <Link href="/">
         <Button

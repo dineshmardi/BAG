@@ -20,7 +20,21 @@ export function AddToCart({
     (state) => state.addItem
   );
 
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] =
+    useState(1);
+
+  function handleAddToCart() {
+    if (product.stock <= 0) {
+      toast.error(
+        "This product is out of stock."
+      );
+      return;
+    }
+
+    addItem(product, quantity);
+
+    toast.success("Added to cart");
+  }
 
   return (
     <>
@@ -30,7 +44,7 @@ export function AddToCart({
         </h3>
 
         <QuantitySelector
-          max={product.stock}
+          max={Math.max(product.stock, 1)}
           value={quantity}
           onChange={setQuantity}
         />
@@ -39,13 +53,12 @@ export function AddToCart({
       <Button
         className="mt-8 w-full md:w-auto"
         size="lg"
-        onClick={() => {
-          addItem(product, quantity);
-
-          toast.success("Added to cart");
-        }}
+        disabled={product.stock <= 0}
+        onClick={handleAddToCart}
       >
-        Add to Cart
+        {product.stock <= 0
+          ? "Out of Stock"
+          : "Add to Cart"}
       </Button>
     </>
   );

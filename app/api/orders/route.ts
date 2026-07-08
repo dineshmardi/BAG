@@ -85,7 +85,10 @@ export async function POST(
         paymentMethod,
 
         // Always create as PENDING
-        paymentStatus: "PENDING",
+        paymentStatus:
+          paymentMethod === "COD"
+            ? "PAID"
+            : "PENDING",
 
         orderStatus: "PLACED",
       });

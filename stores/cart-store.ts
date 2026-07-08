@@ -27,18 +27,29 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (product, quantity = 1) =>
         set((state) => {
+          // Prevent out-of-stock products
+          if (product.stock <= 0) {
+            return state;
+          }
+
           const existing = state.items.find(
             (item) => item._id === product._id
           );
 
           if (existing) {
+            const newQuantity =
+              Math.min(
+                existing.quantity + quantity,
+                product.stock
+              );
+
             return {
               items: state.items.map((item) =>
                 item._id === product._id
                   ? {
-                      ...item,
-                      quantity: item.quantity + quantity,
-                    }
+                    ...item,
+                    quantity: newQuantity,
+                  }
                   : item
               ),
             };
@@ -49,7 +60,10 @@ export const useCartStore = create<CartStore>()(
               ...state.items,
               {
                 ...product,
-                quantity,
+                quantity: Math.min(
+                  quantity,
+                  product.stock
+                ),
               },
             ],
           };
@@ -67,9 +81,9 @@ export const useCartStore = create<CartStore>()(
           items: state.items.map((item) =>
             item._id === id
               ? {
-                  ...item,
-                  quantity: item.quantity + 1,
-                }
+                ...item,
+                quantity: item.quantity + 1,
+              }
               : item
           ),
         })),
@@ -80,9 +94,9 @@ export const useCartStore = create<CartStore>()(
             .map((item) =>
               item._id === id
                 ? {
-                    ...item,
-                    quantity: item.quantity - 1,
-                  }
+                  ...item,
+                  quantity: item.quantity - 1,
+                }
                 : item
             )
             .filter((item) => item.quantity > 0),
