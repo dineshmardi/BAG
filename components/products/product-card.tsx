@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { WishlistButton } from "@/components/wishlist/wishlist-button";
 import { ProductRating } from "./product-rating";
 
 type ProductCardProps = {
@@ -13,6 +15,8 @@ type ProductCardProps = {
   rating: number;
   reviews: number;
   badge: string;
+  onWishlistRemoved?: () => void;
+
 };
 
 export function ProductCard({
@@ -23,6 +27,8 @@ export function ProductCard({
   rating,
   reviews,
   badge,
+  onWishlistRemoved,
+
 }: ProductCardProps) {
   return (
     <Link href={`/products/${id}`}>
@@ -40,14 +46,10 @@ export function ProductCard({
             {badge}
           </span>
 
-          <Button
-            variant="secondary"
-            size="icon"
-            className="absolute right-4 top-4"
-            aria-label="Add to wishlist"
-          >
-            <Heart className="h-4 w-4" />
-          </Button>
+          <WishlistButton
+            productId={id}
+            onRemoved={onWishlistRemoved}
+          />
         </div>
 
         <div className="space-y-3 p-5">
@@ -65,7 +67,9 @@ export function ProductCard({
               ₹{price.toLocaleString("en-IN")}
             </span>
 
-            <Button>Add to Cart</Button>
+            <Button>
+              Add to Cart
+            </Button>
           </div>
         </div>
       </div>

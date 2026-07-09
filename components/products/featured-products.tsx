@@ -1,3 +1,4 @@
+import { ProductGrid } from "./product-grid";
 import { ProductCard } from "./product-card";
 import { connectDB } from "@/lib/mongodb";
 import { getProducts } from "@/lib/services/product.service";
@@ -24,20 +25,9 @@ export async function FeaturedProducts() {
           </p>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard
-              key={product._id}
-              id={product._id}
-              title={product.title}
-              image={product.images[0]}
-              price={product.price}
-              rating={product.rating}
-              reviews={product.reviews}
-              badge={product.featured ? "Featured" : "New"}
-            />
-          ))}
-        </div>
+        <ProductGrid
+          products={products}
+        />
 
       </div>
     </section>
