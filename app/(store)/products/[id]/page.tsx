@@ -1,3 +1,4 @@
+import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { AddToCart } from "@/components/products/add-to-cart";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -59,6 +60,9 @@ export default async function ProductPage({
           <AddToCart product={product} />
         </div>
       </div>
+      <ReviewsSection
+        productId={product._id.toString()}
+      />
     </main>
   );
 }
