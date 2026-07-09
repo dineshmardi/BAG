@@ -1,19 +1,13 @@
-// import { CategoryDashboard } from "@/components/admin/category/category-dashboard";
+export default function AdminCategoriesPage() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">
+        Categories
+      </h1>
 
-// import { connectDB } from "@/lib/mongodb";
-// import { getCategories } from "@/lib/services/category.service";
-
-// export default async function AdminCategoriesPage() {
-//   await connectDB();
-
-//   const categories = await getCategories();
-
-//   return (
-//     <CategoryDashboard
-//       categories={categories.map((category) => ({
-//         ...category,
-//         _id: category._id.toString(),
-//       }))}
-//     />
-//   );
-// }
+      <p className="mt-2 text-gray-500">
+        Categories module is under development.
+      </p>
+    </div>
+  );
+}
