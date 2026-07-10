@@ -23,20 +23,36 @@ export function ProductFilters({
     searchParams.get("category") ??
     "All";
 
-  function changeCategory(
-    value: string
+  const sort =
+    searchParams.get("sort") ??
+    "newest";
+
+  function updateFilters(
+    newCategory: string,
+    newSort: string
   ) {
     const params =
       new URLSearchParams(
         searchParams.toString()
       );
 
-    if (value === "All") {
+    // Category
+    if (newCategory === "All") {
       params.delete("category");
     } else {
       params.set(
         "category",
-        value
+        newCategory
+      );
+    }
+
+    // Sort
+    if (newSort === "newest") {
+      params.delete("sort");
+    } else {
+      params.set(
+        "sort",
+        newSort
       );
     }
 
@@ -46,7 +62,7 @@ export function ProductFilters({
   }
 
   return (
-    <div className="mb-10 flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-white p-5 shadow-sm">
+    <div className="mb-10 flex flex-wrap items-end justify-between gap-6 rounded-xl border bg-white p-5 shadow-sm">
       <div>
         <label className="mb-2 block text-sm font-medium">
           Category
@@ -55,8 +71,9 @@ export function ProductFilters({
         <select
           value={category}
           onChange={(e) =>
-            changeCategory(
-              e.target.value
+            updateFilters(
+              e.target.value,
+              sort
             )
           }
           className="rounded-lg border px-4 py-2"
@@ -75,6 +92,39 @@ export function ProductFilters({
               </option>
             )
           )}
+        </select>
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-medium">
+          Sort By
+        </label>
+
+        <select
+          value={sort}
+          onChange={(e) =>
+            updateFilters(
+              category,
+              e.target.value
+            )
+          }
+          className="rounded-lg border px-4 py-2"
+        >
+          <option value="newest">
+            Newest
+          </option>
+
+          <option value="price-asc">
+            Price: Low → High
+          </option>
+
+          <option value="price-desc">
+            Price: High → Low
+          </option>
+
+          <option value="rating">
+            Highest Rated
+          </option>
         </select>
       </div>
     </div>

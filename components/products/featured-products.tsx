@@ -8,11 +8,13 @@ import { getProducts } from "@/lib/services/product.service";
 type FeaturedProductsProps = {
   search?: string;
   category?: string;
+  sort?: string;
 };
 
 export async function FeaturedProducts({
   search = "",
   category = "",
+  sort = "newest",
 }: FeaturedProductsProps) {
   await connectDB();
 
@@ -20,6 +22,7 @@ export async function FeaturedProducts({
     await getProducts({
       search,
       category,
+      sort,
     });
   const categories =
     await getCategories();

@@ -6,6 +6,7 @@ type HomeProps = {
   searchParams: Promise<{
     search?: string;
     category?: string;
+    sort?: string;
   }>;
 };
 
@@ -15,6 +16,7 @@ export default async function Home({
   const {
     search = "",
     category = "",
+    sort = "newest",
   } = await searchParams;
 
   return (
@@ -26,6 +28,7 @@ export default async function Home({
       <FeaturedProducts
         search={search}
         category={category}
+        sort={sort}
       />
     </>
   );

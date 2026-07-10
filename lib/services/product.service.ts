@@ -1,15 +1,17 @@
 import type { ProductFormValues } from "@/lib/validations/product";
 import Product from "@/models/Product";
 
-export async function getProducts({
-  search = "",
-  category = "",
-  sort = "newest",
-}: {
-  search?: string;
-  category?: string;
-  sort?: string;
-} = {}) {
+export async function getProducts(
+  {
+    search = "",
+    category = "",
+    sort = "newest",
+  }: {
+    search?: string;
+    category?: string;
+    sort?: string;
+  } = {}
+) {
   const filter: any = {};
 
   if (search) {
@@ -36,16 +38,16 @@ export async function getProducts({
     filter.category = category;
   }
 
-  let sortOption = {};
+  let sortOption: Record<string, 1 | -1>;
 
   switch (sort) {
-    case "price-low":
+    case "price-asc":
       sortOption = {
         price: 1,
       };
       break;
 
-    case "price-high":
+    case "price-desc":
       sortOption = {
         price: -1,
       };
@@ -113,14 +115,17 @@ export async function updateProduct(
   );
 }
 
-export async function deleteProduct(id: string) {
+export async function deleteProduct(
+  id: string
+) {
   return Product.findById(id);
 }
 
 export async function getProductById(
   id: string
 ) {
-  const product = await Product.findById(id).lean();
+  const product =
+    await Product.findById(id).lean();
 
   if (!product) {
     return null;
