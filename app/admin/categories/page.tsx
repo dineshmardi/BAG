@@ -1,13 +1,29 @@
-export default function AdminCategoriesPage() {
+import { CategoryDashboard } from "@/components/admin/category/category-dashboard";
+
+import { connectDB } from "@/lib/mongodb";
+import { getCategories } from "@/lib/services/category.service";
+
+export default async function AdminCategoriesPage() {
+  await connectDB();
+
+  const categories =
+    await getCategories();
+
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold">
+      <h1 className="mb-8 text-3xl font-bold">
         Categories
       </h1>
 
-      <p className="mt-2 text-gray-500">
-        Categories module is under development.
-      </p>
+      <CategoryDashboard
+        categories={categories.map(
+          (category: any) => ({
+            ...category,
+            _id:
+              category._id.toString(),
+          })
+        )}
+      />
     </div>
   );
 }

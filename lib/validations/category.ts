@@ -5,9 +5,7 @@ export const categorySchema = z.object({
     .string()
     .min(2, "Category name is required"),
 
-  slug: z
-    .string()
-    .min(2, "Slug is required"),
+
 });
 
 export type CategoryFormValues =

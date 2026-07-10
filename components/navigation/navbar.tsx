@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import { SearchBar } from "./search-bar";
 import Container from "@/components/ui/Container";
 import { Logo } from "@/components/brand/logo";
 
@@ -11,6 +13,10 @@ export function Navbar() {
         <Logo />
 
         <NavLinks />
+
+        <Suspense fallback={null}>
+          <SearchBar />
+        </Suspense>
 
         <NavActions />
       </div>

@@ -2,12 +2,31 @@ import { Hero } from "@/components/hero/hero";
 import { Categories } from "@/components/categories/categories";
 import { FeaturedProducts } from "@/components/products/featured-products";
 
-export default function Home() {
+type HomeProps = {
+  searchParams: Promise<{
+    search?: string;
+    category?: string;
+  }>;
+};
+
+export default async function Home({
+  searchParams,
+}: HomeProps) {
+  const {
+    search = "",
+    category = "",
+  } = await searchParams;
+
   return (
     <>
       <Hero />
+
       <Categories />
-      <FeaturedProducts />
+
+      <FeaturedProducts
+        search={search}
+        category={category}
+      />
     </>
   );
 }

@@ -16,6 +16,7 @@ const CategorySchema = new Schema(
       lowercase: true,
       trim: true,
     },
+
   },
   {
     timestamps: true,

@@ -1,3 +1,5 @@
+import cloudinary from "@/lib/cloudinary";
+import Product from "@/models/Product";
 import { NextRequest, NextResponse } from "next/server";
 
 import { connectDB } from "@/lib/mongodb";
@@ -55,23 +57,63 @@ export async function DELETE(
 
         const { id } = await params;
 
-        const product = await deleteProduct(id);
+        const product =
+            await deleteProduct(id);
 
         if (!product) {
             return NextResponse.json(
-                { message: "Product not found" },
+                {
+                    message:
+                        "Product not found",
+                },
                 { status: 404 }
             );
         }
 
+        const imageUrl =
+            product.images?.[0];
+
+        if (imageUrl) {
+            try {
+                const parts =
+                    imageUrl.split("/upload/")[1];
+
+                const publicId =
+                    parts
+                        .replace(
+                            /^v\d+\//,
+                            ""
+                        )
+                        .replace(
+                            /\.[^/.]+$/,
+                            ""
+                        );
+
+                await cloudinary.uploader.destroy(
+                    publicId
+                );
+            } catch (error) {
+                console.error(
+                    "Cloudinary delete failed:",
+                    error
+                );
+            }
+        }
+
+        await Product.findByIdAndDelete(id);
+
         return NextResponse.json({
-            message: "Product deleted successfully",
+            message:
+                "Product deleted successfully",
         });
     } catch (error) {
         console.error(error);
 
         return NextResponse.json(
-            { message: "Failed to delete product" },
+            {
+                message:
+                    "Failed to delete product",
+            },
             { status: 400 }
         );
     }

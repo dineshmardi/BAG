@@ -10,16 +10,34 @@ export async function getCategories() {
 export async function createCategory(
   data: CategoryFormValues
 ) {
-  return Category.create(data);
+  const slug = data.name
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-");
+
+  return Category.create({
+    name: data.name,
+    slug,
+
+  });
 }
 
 export async function updateCategory(
   id: string,
   data: CategoryFormValues
 ) {
+  const slug = data.name
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-");
+
   return Category.findByIdAndUpdate(
     id,
-    data,
+    {
+      name: data.name,
+      slug,
+
+    },
     {
       new: true,
       runValidators: true,

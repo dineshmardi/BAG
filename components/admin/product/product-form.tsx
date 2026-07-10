@@ -1,4 +1,5 @@
 "use client";
+import { CategorySelect } from "@/components/admin/category/category-select";
 import { ImageUpload } from "./image-upload";
 import { fetchWithTimeout } from "@/lib/fetch-with-timeout";
 import { toast } from "sonner";
@@ -189,11 +190,18 @@ export function ProductForm({
       </div>
 
       <div>
-        <Label htmlFor="category">Category</Label>
+        <Label htmlFor="category">
+          Category
+        </Label>
 
-        <Input
-          id="category"
-          {...register("category")}
+        <CategorySelect
+          value={watch("category")}
+          onChange={(value) =>
+            setValue("category", value, {
+              shouldValidate: true,
+              shouldDirty: true,
+            })
+          }
         />
 
         <p className="mt-1 text-sm text-red-500">
