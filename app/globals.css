@@ -63,6 +63,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 html {
   scroll-behavior: smooth;
 }
@@ -255,10 +256,43 @@ button {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
+  }
+}
+
+.site-container {
+  width: calc(100% - 240px);
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 1280px) {
+  .site-container {
+    width: calc(100% - 120px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .site-container {
+    width: calc(100% - 64px);
+  }
+}
+
+@media (max-width: 768px) {
+  .site-container {
+    width: calc(100% - 32px);
+  }
+}
+
+@media (max-width: 480px) {
+  .site-container {
+    width: calc(100% - 24px);
   }
 }

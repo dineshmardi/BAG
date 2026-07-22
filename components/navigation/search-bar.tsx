@@ -38,7 +38,7 @@ export function SearchBar() {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="hidden min-w-0 flex-1 items-center gap-2 lg:flex">
       <input
         type="text"
         placeholder="Search products..."
@@ -51,12 +51,13 @@ export function SearchBar() {
             handleSearch();
           }
         }}
-        className="w-64 rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-black"
+        className="min-w-0 flex-1 rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-black"
       />
 
       <Button
         size="icon"
         onClick={handleSearch}
+        className="shrink-0"
       >
         <Search className="h-4 w-4" />
       </Button>

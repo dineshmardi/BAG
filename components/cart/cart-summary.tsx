@@ -9,7 +9,17 @@ export function CartSummary() {
   const items = useCartStore((state) => state.items);
 
   const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => {
+      const effectivePrice =
+        item.onSale &&
+          item.salePrice !== undefined &&
+          item.salePrice > 0 &&
+          item.salePrice < item.price
+          ? item.salePrice
+          : item.price;
+
+      return sum + effectivePrice * item.quantity;
+    },
     0
   );
 

@@ -1,9 +1,16 @@
-import mongoose, { Schema, Document, models, model } from "mongoose";
+import mongoose, {
+  Schema,
+  Document,
+  models,
+  model,
+} from "mongoose";
 
 export interface IProduct extends Document {
   title: string;
   description: string;
   price: number;
+  salePrice?: number;
+  onSale: boolean;
   category: string;
   images: string[];
   stock: number;
@@ -29,6 +36,17 @@ const ProductSchema = new Schema<IProduct>(
       type: Number,
       required: true,
       min: 0,
+    },
+
+    salePrice: {
+      type: Number,
+      min: 0,
+      default: null,
+    },
+
+    onSale: {
+      type: Boolean,
+      default: false,
     },
 
     category: {
@@ -67,6 +85,10 @@ const ProductSchema = new Schema<IProduct>(
 );
 
 const Product =
-  models.Product || model<IProduct>("Product", ProductSchema);
+  models.Product ||
+  model<IProduct>(
+    "Product",
+    ProductSchema
+  );
 
 export default Product;

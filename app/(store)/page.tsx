@@ -7,6 +7,8 @@ type HomeProps = {
     search?: string;
     category?: string;
     sort?: string;
+    minPrice?: string;
+    maxPrice?: string;
   }>;
 };
 
@@ -17,6 +19,8 @@ export default async function Home({
     search = "",
     category = "",
     sort = "newest",
+    minPrice = "",
+    maxPrice = "",
   } = await searchParams;
 
   return (
@@ -29,6 +33,8 @@ export default async function Home({
         search={search}
         category={category}
         sort={sort}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
       />
     </>
   );

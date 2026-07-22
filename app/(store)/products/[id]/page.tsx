@@ -43,9 +43,28 @@ export default async function ProductPage({
             {product.title}
           </h1>
 
-          <p className="mt-4 text-3xl font-semibold">
-            ₹{product.price.toLocaleString("en-IN")}
-          </p>
+          {product.onSale &&
+            product.salePrice !== undefined &&
+            product.salePrice > 0 &&
+            product.salePrice < product.price ? (
+            <div className="mt-4 flex items-center gap-3">
+              <span className="text-3xl font-semibold">
+                ₹{product.salePrice.toLocaleString("en-IN")}
+              </span>
+
+              <span className="text-xl text-muted-foreground line-through">
+                ₹{product.price.toLocaleString("en-IN")}
+              </span>
+
+              <span className="rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-600">
+                Sale
+              </span>
+            </div>
+          ) : (
+            <p className="mt-4 text-3xl font-semibold">
+              ₹{product.price.toLocaleString("en-IN")}
+            </p>
+          )}
 
           <p className="mt-6 text-muted-foreground leading-7">
             {product.description}

@@ -4,12 +4,12 @@ import { NAVIGATION } from "@/constants/navigation";
 
 export function NavLinks() {
   return (
-    <nav className="hidden items-center gap-8 lg:flex">
+    <nav className="hidden shrink-0 items-center gap-4 xl:flex 2xl:gap-6">
       {NAVIGATION.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          className="group relative text-sm font-medium transition-colors hover:text-[var(--accent-hover)]"
+          className="group relative whitespace-nowrap text-sm font-medium transition-colors hover:text-[var(--accent-hover)]"
         >
           {item.label}
 

@@ -2,9 +2,14 @@ import Category from "@/models/Category";
 import type { CategoryFormValues } from "@/lib/validations/category";
 
 export async function getCategories() {
-  return Category.find()
+  const categories = await Category.find()
     .sort({ name: 1 })
     .lean();
+
+  return categories.map((category) => ({
+    ...category,
+    _id: category._id.toString(),
+  }));
 }
 
 export async function createCategory(

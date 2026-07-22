@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import {
   Heart,
-  Search,
   ShoppingBag,
 } from "lucide-react";
 
@@ -43,15 +42,8 @@ export function NavActions() {
     count();
 
   return (
-    <div className="flex items-center gap-2">
-      <Button
-        variant="ghost"
-        size="icon"
-        aria-label="Search"
-      >
-        <Search className="h-5 w-5" />
-      </Button>
-
+    <div className="flex items-center gap-1 sm:gap-2">
+      {/* Wishlist */}
       <Link href="/wishlist">
         <Button
           variant="ghost"
@@ -69,6 +61,7 @@ export function NavActions() {
         </Button>
       </Link>
 
+      {/* Cart */}
       <Link href="/cart">
         <Button
           variant="ghost"
@@ -86,25 +79,27 @@ export function NavActions() {
         </Button>
       </Link>
 
-      {session ? (
-        <Button
-          variant="ghost"
-          onClick={() =>
-            signOut({
-              callbackUrl:
-                "/login",
-            })
-          }
-        >
-          Logout
-        </Button>
-      ) : (
-        <Link href="/login">
-          <Button variant="ghost">
-            Login
+      {/* Desktop Authentication */}
+      <div className="hidden xl:block">
+        {session ? (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              signOut({
+                callbackUrl: "/login",
+              })
+            }
+          >
+            Logout
           </Button>
-        </Link>
-      )}
+        ) : (
+          <Link href="/login">
+            <Button variant="ghost">
+              Login
+            </Button>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

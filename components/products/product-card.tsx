@@ -12,11 +12,12 @@ type ProductCardProps = {
   title: string;
   image: string;
   price: number;
+  salePrice?: number;
+  onSale?: boolean;
   rating: number;
   reviews: number;
   badge: string;
   onWishlistRemoved?: () => void;
-
 };
 
 export function ProductCard({
@@ -24,12 +25,19 @@ export function ProductCard({
   title,
   image,
   price,
+  salePrice,
+  onSale = false,
   rating,
   reviews,
   badge,
   onWishlistRemoved,
-
 }: ProductCardProps) {
+  const hasValidSale =
+    onSale &&
+    salePrice !== undefined &&
+    salePrice > 0 &&
+    salePrice < price;
+
   return (
     <Link href={`/products/${id}`}>
       <div className="group overflow-hidden rounded-3xl border bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
@@ -42,8 +50,14 @@ export function ProductCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
 
-          <span className="absolute left-4 top-4 rounded-full bg-black px-3 py-1 text-xs font-medium text-white">
-            {badge}
+          <span
+            className={`absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-medium text-white ${
+              hasValidSale
+                ? "bg-red-600"
+                : "bg-black"
+            }`}
+          >
+            {hasValidSale ? "Sale" : badge}
           </span>
 
           <WishlistButton
@@ -62,10 +76,24 @@ export function ProductCard({
             {title}
           </h3>
 
-          <div className="flex items-center justify-between">
-            <span className="text-xl font-bold">
-              ₹{price.toLocaleString("en-IN")}
-            </span>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              {hasValidSale ? (
+                <>
+                  <span className="text-xl font-bold text-red-600">
+                    ₹{salePrice.toLocaleString("en-IN")}
+                  </span>
+
+                  <span className="text-sm text-muted-foreground line-through">
+                    ₹{price.toLocaleString("en-IN")}
+                  </span>
+                </>
+              ) : (
+                <span className="text-xl font-bold">
+                  ₹{price.toLocaleString("en-IN")}
+                </span>
+              )}
+            </div>
 
             <Button>
               Add to Cart

@@ -37,9 +37,20 @@ export function CheckoutSummary() {
   } = useCheckoutStore();
 
   const subtotal = items.reduce(
-    (total, item) =>
-      total +
-      item.price * item.quantity,
+    (total, item) => {
+      const effectivePrice =
+        item.onSale &&
+          item.salePrice !== undefined &&
+          item.salePrice > 0 &&
+          item.salePrice < item.price
+          ? item.salePrice
+          : item.price;
+
+      return (
+        total +
+        effectivePrice * item.quantity
+      );
+    },
     0
   );
 

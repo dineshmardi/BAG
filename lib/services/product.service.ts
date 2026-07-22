@@ -6,14 +6,21 @@ export async function getProducts(
     search = "",
     category = "",
     sort = "newest",
+    minPrice = "",
+    maxPrice = "",
+    onSale,
   }: {
     search?: string;
     category?: string;
     sort?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    onSale?: boolean;
   } = {}
 ) {
   const filter: any = {};
 
+  // Search
   if (search) {
     filter.$or = [
       {
@@ -31,6 +38,7 @@ export async function getProducts(
     ];
   }
 
+  // Category
   if (
     category &&
     category !== "All"
@@ -38,7 +46,31 @@ export async function getProducts(
     filter.category = category;
   }
 
-  let sortOption: Record<string, 1 | -1>;
+  // Sale products
+  if (onSale === true) {
+    filter.onSale = true;
+  }
+
+  // Price range
+  if (minPrice || maxPrice) {
+    filter.price = {};
+
+    if (minPrice) {
+      filter.price.$gte =
+        Number(minPrice);
+    }
+
+    if (maxPrice) {
+      filter.price.$lte =
+        Number(maxPrice);
+    }
+  }
+
+  // Sorting
+  let sortOption: Record<
+    string,
+    1 | -1
+  >;
 
   switch (sort) {
     case "price-asc":
@@ -73,7 +105,17 @@ export async function getProducts(
   return products.map(
     (product) => ({
       ...product,
-      _id: product._id.toString(),
+
+      _id:
+        product._id.toString(),
+
+      // Support existing products
+      onSale:
+        product.onSale ?? false,
+
+      salePrice:
+        product.salePrice ??
+        undefined,
     })
   );
 }
@@ -83,14 +125,39 @@ export async function createProduct(
 ) {
   return Product.create({
     title: data.title,
-    description: data.description,
+
+    description:
+      data.description,
+
     price: data.price,
-    category: data.category,
-    images: [data.image],
-    stock: data.stock,
-    featured: false,
-    rating: 5,
-    reviews: 0,
+
+    // Sale
+    onSale:
+      data.onSale ?? false,
+
+    salePrice:
+      data.onSale
+        ? data.salePrice
+        : null,
+
+    category:
+      data.category,
+
+    images: [
+      data.image,
+    ],
+
+    stock:
+      data.stock,
+
+    featured:
+      false,
+
+    rating:
+      5,
+
+    reviews:
+      0,
   });
 }
 
@@ -101,12 +168,33 @@ export async function updateProduct(
   return Product.findByIdAndUpdate(
     id,
     {
-      title: data.title,
-      description: data.description,
-      price: data.price,
-      category: data.category,
-      images: [data.image],
-      stock: data.stock,
+      title:
+        data.title,
+
+      description:
+        data.description,
+
+      price:
+        data.price,
+
+      // Sale
+      onSale:
+        data.onSale ?? false,
+
+      salePrice:
+        data.onSale
+          ? data.salePrice
+          : null,
+
+      category:
+        data.category,
+
+      images: [
+        data.image,
+      ],
+
+      stock:
+        data.stock,
     },
     {
       new: true,
@@ -118,14 +206,18 @@ export async function updateProduct(
 export async function deleteProduct(
   id: string
 ) {
-  return Product.findById(id);
+  return Product.findByIdAndDelete(
+    id
+  );
 }
 
 export async function getProductById(
   id: string
 ) {
   const product =
-    await Product.findById(id).lean();
+    await Product.findById(
+      id
+    ).lean();
 
   if (!product) {
     return null;
@@ -133,6 +225,17 @@ export async function getProductById(
 
   return {
     ...product,
-    _id: product._id.toString(),
+
+    _id:
+      product._id.toString(),
+
+    // Support existing products
+    onSale:
+      product.onSale ??
+      false,
+
+    salePrice:
+      product.salePrice ??
+      undefined,
   };
 }

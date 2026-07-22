@@ -1,6 +1,14 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Category = {
   _id: string;
@@ -15,9 +23,9 @@ export function ProductFilters({
   categories,
 }: ProductFiltersProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
-  const searchParams =
-    useSearchParams();
+  const searchParams = useSearchParams();
 
   const category =
     searchParams.get("category") ??
@@ -27,9 +35,23 @@ export function ProductFilters({
     searchParams.get("sort") ??
     "newest";
 
+  const minPrice =
+    searchParams.get("minPrice") ?? "";
+
+  const maxPrice =
+    searchParams.get("maxPrice") ?? "";
+
+  const [min, setMin] =
+    useState(minPrice);
+
+  const [max, setMax] =
+    useState(maxPrice);
+
   function updateFilters(
     newCategory: string,
-    newSort: string
+    newSort: string,
+    newMinPrice: string,
+    newMaxPrice: string
   ) {
     const params =
       new URLSearchParams(
@@ -56,76 +78,157 @@ export function ProductFilters({
       );
     }
 
+    // Min Price
+    if (newMinPrice.trim()) {
+      params.set(
+        "minPrice",
+        newMinPrice
+      );
+    } else {
+      params.delete("minPrice");
+    }
+
+    // Max Price
+    if (newMaxPrice.trim()) {
+      params.set(
+        "maxPrice",
+        newMaxPrice
+      );
+    } else {
+      params.delete("maxPrice");
+    }
+
+    const queryString = params.toString();
+
     router.push(
-      `/?${params.toString()}`
+      queryString
+        ? `${pathname}?${queryString}`
+        : pathname
     );
   }
 
   return (
-    <div className="mb-10 flex flex-wrap items-end justify-between gap-6 rounded-xl border bg-white p-5 shadow-sm">
-      <div>
-        <label className="mb-2 block text-sm font-medium">
-          Category
-        </label>
+    <div className="mb-10 rounded-xl border bg-white p-6 shadow-sm">
+      <div className="grid gap-6 md:grid-cols-4">
 
-        <select
-          value={category}
-          onChange={(e) =>
-            updateFilters(
-              e.target.value,
-              sort
-            )
-          }
-          className="rounded-lg border px-4 py-2"
-        >
-          <option value="All">
-            All
-          </option>
+        {/* Category */}
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Category
+          </label>
 
-          {categories.map(
-            (category) => (
-              <option
-                key={category._id}
-                value={category.name}
-              >
-                {category.name}
-              </option>
-            )
-          )}
-        </select>
+          <select
+            value={category}
+            onChange={(e) =>
+              updateFilters(
+                e.target.value,
+                sort,
+                min,
+                max
+              )
+            }
+            className="w-full rounded-lg border px-4 py-2"
+          >
+            <option value="All">
+              All
+            </option>
+
+            {categories.map(
+              (category) => (
+                <option
+                  key={category._id}
+                  value={category.name}
+                >
+                  {category.name}
+                </option>
+              )
+            )}
+          </select>
+        </div>
+
+        {/* Sort */}
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Sort By
+          </label>
+
+          <select
+            value={sort}
+            onChange={(e) =>
+              updateFilters(
+                category,
+                e.target.value,
+                min,
+                max
+              )
+            }
+            className="w-full rounded-lg border px-4 py-2"
+          >
+            <option value="newest">
+              Newest
+            </option>
+
+            <option value="price-asc">
+              Price: Low → High
+            </option>
+
+            <option value="price-desc">
+              Price: High → Low
+            </option>
+
+            <option value="rating">
+              Highest Rated
+            </option>
+          </select>
+        </div>
+
+        {/* Min Price */}
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Min Price
+          </label>
+
+          <Input
+            type="number"
+            placeholder="0"
+            value={min}
+            onChange={(e) =>
+              setMin(e.target.value)
+            }
+          />
+        </div>
+
+        {/* Max Price */}
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Max Price
+          </label>
+
+          <Input
+            type="number"
+            placeholder="10000"
+            value={max}
+            onChange={(e) =>
+              setMax(e.target.value)
+            }
+          />
+        </div>
+
       </div>
 
-      <div>
-        <label className="mb-2 block text-sm font-medium">
-          Sort By
-        </label>
-
-        <select
-          value={sort}
-          onChange={(e) =>
+      <div className="mt-6 flex justify-end">
+        <Button
+          onClick={() =>
             updateFilters(
               category,
-              e.target.value
+              sort,
+              min,
+              max
             )
           }
-          className="rounded-lg border px-4 py-2"
         >
-          <option value="newest">
-            Newest
-          </option>
-
-          <option value="price-asc">
-            Price: Low → High
-          </option>
-
-          <option value="price-desc">
-            Price: High → Low
-          </option>
-
-          <option value="rating">
-            Highest Rated
-          </option>
-        </select>
+          Apply Filters
+        </Button>
       </div>
     </div>
   );

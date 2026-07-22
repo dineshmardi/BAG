@@ -30,22 +30,45 @@ export async function calculateOrder(
     }
 
     if (
-      product.stock < item.quantity
+      product.stock <
+      item.quantity
     ) {
       throw new Error(
         `${product.title} has only ${product.stock} item(s) left in stock.`
       );
     }
 
-    subtotal +=
-      product.price * item.quantity;
+    // Use sale price only when the sale is valid
+    const effectivePrice =
+      product.onSale &&
+      product.salePrice != null &&
+      product.salePrice > 0 &&
+      product.salePrice <
+        product.price
+        ? product.salePrice
+        : product.price;
 
+    subtotal +=
+      effectivePrice *
+      item.quantity;
+
+    // Store the actual price paid
+    // in the order
     orderItems.push({
-      productId: product._id,
-      title: product.title,
-      image: product.images[0],
-      price: product.price,
-      quantity: item.quantity,
+      productId:
+        product._id,
+
+      title:
+        product.title,
+
+      image:
+        product.images[0],
+
+      price:
+        effectivePrice,
+
+      quantity:
+        item.quantity,
     });
   }
 
@@ -61,7 +84,9 @@ export async function calculateOrder(
     100;
 
   const total =
-    subtotal + shipping + tax;
+    subtotal +
+    shipping +
+    tax;
 
   return {
     orderItems,

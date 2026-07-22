@@ -27,6 +27,14 @@ export function CartItem({
         (state) => state.removeItem
     );
 
+    const effectivePrice =
+        item.onSale &&
+            item.salePrice !== undefined &&
+            item.salePrice > 0 &&
+            item.salePrice < item.price
+            ? item.salePrice
+            : item.price;
+
     return (
         <div className="flex gap-5 rounded-xl border p-5">
             <div className="relative h-28 w-28 overflow-hidden rounded-lg border">
@@ -45,13 +53,21 @@ export function CartItem({
                     </h2>
 
                     <div className="mt-2 space-y-1">
-                        <p className="text-muted-foreground">
-                            ₹{item.price.toLocaleString("en-IN")} each
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="font-medium">
+                                ₹{effectivePrice.toLocaleString("en-IN")} each
+                            </span>
+
+                            {effectivePrice !== item.price && (
+                                <span className="text-sm text-muted-foreground line-through">
+                                    ₹{item.price.toLocaleString("en-IN")}
+                                </span>
+                            )}
+                        </div>
 
                         <p className="font-semibold">
                             Subtotal: ₹{(
-                                item.price * item.quantity
+                                effectivePrice * item.quantity
                             ).toLocaleString("en-IN")}
                         </p>
                     </div>
