@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import Container from "@/components/ui/Container";
+import Container from "@/components/ui/container";
 
 import { ProductFilters } from "./product-filters";
 import { ProductCard } from "./product-card";

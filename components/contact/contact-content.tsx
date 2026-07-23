@@ -15,7 +15,7 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import Container from "@/components/ui/Container";
+import Container from "@/components/ui/container";
 
 export function ContactContent() {
     const [isSubmitting, setIsSubmitting] =

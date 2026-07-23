@@ -1,4 +1,4 @@
-import Container from "@/components/ui/Container";
+import Container from "@/components/ui/container";
 
 import { HeroBackground } from "./hero-background";
 import { HeroButtons } from "./hero-buttons";

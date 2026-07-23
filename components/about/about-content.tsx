@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 
-import Container from "@/components/ui/Container";
+import Container from "@/components/ui/container";
 
 export function AboutContent() {
   return (

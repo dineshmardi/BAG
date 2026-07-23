@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import Container from "@/components/ui/Container";
+import Container from "@/components/ui/container";
 import { Logo } from "@/components/brand/logo";
 
 import { SearchBar } from "./search-bar";

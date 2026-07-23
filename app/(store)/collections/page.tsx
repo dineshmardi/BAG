@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import Container from "@/components/ui/Container";
+import Container from "@/components/ui/container";
 
 import { connectDB } from "@/lib/mongodb";
 import { getCategories } from "@/lib/services/category.service";
