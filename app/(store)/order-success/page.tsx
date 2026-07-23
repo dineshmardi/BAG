@@ -1,21 +1,38 @@
 "use client";
 
+import {
+    Suspense,
+} from "react";
+
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+
+import {
+    useSearchParams,
+} from "next/navigation";
+
 import {
     Check,
     PackageCheck,
     ShoppingBag,
 } from "lucide-react";
 
-export default function OrderSuccessPage() {
-    const searchParams = useSearchParams();
+// =========================
+// ORDER SUCCESS CONTENT
+// =========================
 
-    const orderId = searchParams.get("id");
+function OrderSuccessContent() {
+    const searchParams =
+        useSearchParams();
 
-    const shortOrderId = orderId
-        ? orderId.slice(-8).toUpperCase()
-        : null;
+    const orderId =
+        searchParams.get("id");
+
+    const shortOrderId =
+        orderId
+            ? orderId
+                .slice(-8)
+                .toUpperCase()
+            : null;
 
     return (
         <main className="relative flex min-h-[70vh] w-full items-center justify-center overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
@@ -28,10 +45,10 @@ export default function OrderSuccessPage() {
 
             {/* Success Card */}
             <div className="relative z-10 w-full max-w-2xl rounded-3xl border border-gray-200 bg-white px-6 py-12 text-center shadow-lg sm:px-12 sm:py-14">
+
                 {/* Animated Success Icon */}
                 <div className="mx-auto flex justify-center">
                     <div className="relative flex h-24 w-24 items-center justify-center">
-                        {/* Continuous pulse */}
                         <span className="absolute inset-0 animate-ping rounded-full bg-green-200 opacity-40" />
 
                         <span className="absolute inset-2 animate-pulse rounded-full bg-green-100" />
@@ -113,5 +130,29 @@ export default function OrderSuccessPage() {
                 </div>
             </div>
         </main>
+    );
+}
+
+// =========================
+// PAGE
+// =========================
+
+export default function OrderSuccessPage() {
+    return (
+        <Suspense
+            fallback={
+                <main className="flex min-h-[70vh] w-full items-center justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-black" />
+
+                        <p className="text-sm text-gray-500">
+                            Loading order details...
+                        </p>
+                    </div>
+                </main>
+            }
+        >
+            <OrderSuccessContent />
+        </Suspense>
     );
 }
