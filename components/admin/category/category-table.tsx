@@ -77,8 +77,8 @@ export function CategoryTable({
     }
 
     return (
-        <div className="overflow-hidden rounded-xl border">
-            <table className="w-full">
+        <div className="w-full overflow-x-auto rounded-xl border">
+            <table className="w-full min-w-[600px]">
                 <thead className="bg-gray-100">
                     <tr>
                         <th className="px-4 py-3 text-left">

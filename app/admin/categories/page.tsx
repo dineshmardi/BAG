@@ -10,20 +10,28 @@ export default async function AdminCategoriesPage() {
     await getCategories();
 
   return (
-    <div className="p-6">
-      <h1 className="mb-8 text-3xl font-bold">
-        Categories
-      </h1>
+    <div className="w-full">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">
+          Categories
+        </h1>
 
-      <CategoryDashboard
-        categories={categories.map(
-          (category: any) => ({
-            ...category,
-            _id:
-              category._id.toString(),
-          })
-        )}
-      />
+        <p className="mt-2 text-gray-500">
+          Manage your product categories.
+        </p>
+      </div>
+
+      <div className="w-full">
+        <CategoryDashboard
+          categories={categories.map(
+            (category: any) => ({
+              ...category,
+              _id:
+                category._id.toString(),
+            })
+          )}
+        />
+      </div>
     </div>
   );
 }

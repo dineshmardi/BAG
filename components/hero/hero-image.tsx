@@ -6,8 +6,8 @@ export function HeroImage() {
       <div className="absolute h-80 w-80 rounded-full bg-[var(--accent)]/10 blur-3xl" />
 
       <Image
-        src="/images/hero/placeholder-bag.png"
-        alt="Luxury Bag"
+        src="/images/hero/luxe-hero-new.png"
+        alt="Luxury handbag collection"
         width={600}
         height={600}
         priority

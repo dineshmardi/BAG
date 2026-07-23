@@ -10,6 +10,7 @@ import { createOrder } from "@/lib/services/order.service";
 import { getAddressById } from "@/lib/services/address.service";
 
 import Product from "@/models/Product";
+import Notification from "@/models/Notification";
 
 export async function POST(
   request: Request
@@ -17,15 +18,29 @@ export async function POST(
   try {
     await connectDB();
 
+    // =========================
+    // AUTHENTICATION
+    // =========================
+
     const session =
-      await getServerSession(authOptions);
+      await getServerSession(
+        authOptions
+      );
 
     if (!session) {
       return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
+        {
+          message: "Unauthorized",
+        },
+        {
+          status: 401,
+        }
       );
     }
+
+    // =========================
+    // REQUEST DATA
+    // =========================
 
     const {
       addressId,
@@ -33,19 +48,29 @@ export async function POST(
       items,
     } = await request.json();
 
+    // =========================
+    // ADDRESS VALIDATION
+    // =========================
+
     const address =
-      await getAddressById(addressId);
+      await getAddressById(
+        addressId
+      );
 
     if (!address) {
       return NextResponse.json(
         {
-          message: "Address not found.",
+          message:
+            "Address not found.",
         },
         {
           status: 404,
         }
       );
     }
+
+    // Make sure the address
+    // belongs to the logged-in user
 
     if (
       address.userId.toString() !==
@@ -61,12 +86,23 @@ export async function POST(
       );
     }
 
+    // =========================
+    // CALCULATE ORDER
+    // =========================
+
     const calculation =
-      await calculateOrder(items);
+      await calculateOrder(
+        items
+      );
+
+    // =========================
+    // CREATE ORDER
+    // =========================
 
     const order =
       await createOrder({
-        userId: session.user.id,
+        userId:
+          session.user.id,
 
         addressId,
 
@@ -84,28 +120,71 @@ export async function POST(
 
         paymentMethod,
 
-        // Always create as PENDING
         paymentStatus:
           paymentMethod === "COD"
             ? "PAID"
             : "PENDING",
 
-        orderStatus: "PLACED",
+        orderStatus:
+          "PLACED",
       });
 
-    // Reduce stock ONLY for COD
-    if (paymentMethod === "COD") {
-      for (const item of items) {
+    // =========================
+    // CREATE ADMIN NOTIFICATION
+    // FOR EVERY NEW ORDER
+    // =========================
+
+    await Notification.create({
+      type: "NEW_ORDER",
+
+      title:
+        paymentMethod === "COD"
+          ? "New COD Order"
+          : "New Online Order",
+
+      message: `New ${
+        paymentMethod === "COD"
+          ? "COD"
+          : "online"
+      } order #${order._id
+        .toString()
+        .slice(-8)
+        .toUpperCase()} received for ₹${calculation.total.toLocaleString(
+        "en-IN"
+      )}.`,
+
+      orderId:
+        order._id,
+
+      isRead:
+        false,
+    });
+
+    // =========================
+    // REDUCE STOCK FOR COD
+    // =========================
+
+    if (
+      paymentMethod === "COD"
+    ) {
+      for (
+        const item of items
+      ) {
         await Product.findByIdAndUpdate(
           item.productId,
           {
             $inc: {
-              stock: -item.quantity,
+              stock:
+                -item.quantity,
             },
           }
         );
       }
     }
+
+    // =========================
+    // RETURN CREATED ORDER
+    // =========================
 
     return NextResponse.json(
       order,
@@ -114,7 +193,10 @@ export async function POST(
       }
     );
   } catch (error) {
-    console.error(error);
+    console.error(
+      "Order creation error:",
+      error
+    );
 
     return NextResponse.json(
       {
@@ -128,6 +210,13 @@ export async function POST(
   }
 }
 
+// =========================
+// GET ORDERS
+// Currently unchanged
+// =========================
+
 export async function GET() {
-  return NextResponse.json([]);
+  return NextResponse.json(
+    []
+  );
 }

@@ -1,25 +1,37 @@
-import { requireAdmin } from "@/lib/auth-admin";
-import { connectDB } from "@/lib/mongodb";
+import {
+  requireAdmin,
+} from "@/lib/auth-admin";
 
-import { getStoreSettings } from "@/lib/services/store-settings.service";
+import {
+  connectDB,
+} from "@/lib/mongodb";
 
-import { StoreSettingsPage } from "@/components/admin/settings/store-settings-page";
+import {
+  getStoreSettings,
+} from "@/lib/services/store-settings.service";
+
+import {
+  StoreSettingsPage,
+} from "@/components/admin/settings/store-settings-page";
 
 export default async function SettingsPage() {
-    await connectDB();
+  // Verify admin access
+  await requireAdmin();
 
-    // await requireAdmin();
+  // Connect to MongoDB
+  await connectDB();
 
-    // We'll add admin-role verification later.
+  // Load store settings
+  const settings =
+    await getStoreSettings();
 
-    const settings =
-        await getStoreSettings();
-
-    return (
-        <StoreSettingsPage
-            settings={JSON.parse(
-                JSON.stringify(settings)
-            )}
-        />
-    );
+  return (
+    <StoreSettingsPage
+      settings={JSON.parse(
+        JSON.stringify(
+          settings
+        )
+      )}
+    />
+  );
 }

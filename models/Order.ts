@@ -105,6 +105,11 @@ const OrderSchema = new Schema(
       default: null,
     },
 
+    stockDeducted: {
+      type: Boolean,
+      default: false,
+    },
+
     orderStatus: {
       type: String,
       enum: [
