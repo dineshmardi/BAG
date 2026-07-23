@@ -2,16 +2,27 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { signOut, useSession } from "next-auth/react";
+import {
+  signOut,
+  useSession,
+} from "next-auth/react";
+
 import {
   Heart,
   ShoppingBag,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import {
+  Button,
+} from "@/components/ui/button";
 
-import { useCartStore } from "@/stores/cart-store";
-import { useWishlistStore } from "@/stores/wishlist-store";
+import {
+  useCartStore,
+} from "@/stores/cart-store";
+
+import {
+  useWishlistStore,
+} from "@/stores/wishlist-store";
 
 export function NavActions() {
   const items = useCartStore(
@@ -23,27 +34,39 @@ export function NavActions() {
     count,
   } = useWishlistStore();
 
-  const { data: session } =
-    useSession();
+  const {
+    data: session,
+  } = useSession();
 
   useEffect(() => {
     if (session) {
-      fetchWishlist().catch(() => {});
+      fetchWishlist().catch(
+        () => {}
+      );
     }
-  }, [session, fetchWishlist]);
+  }, [
+    session,
+    fetchWishlist,
+  ]);
 
-  const cartCount = items.reduce(
-    (total, item) =>
-      total + item.quantity,
-    0
-  );
+  const cartCount =
+    items.reduce(
+      (total, item) =>
+        total +
+        item.quantity,
+      0
+    );
 
   const wishlistCount =
     count();
 
   return (
     <div className="flex items-center gap-1 sm:gap-2">
-      {/* Wishlist */}
+
+      {/* =========================
+          WISHLIST
+      ========================= */}
+
       <Link href="/wishlist">
         <Button
           variant="ghost"
@@ -61,7 +84,10 @@ export function NavActions() {
         </Button>
       </Link>
 
-      {/* Cart */}
+      {/* =========================
+          CART
+      ========================= */}
+
       <Link href="/cart">
         <Button
           variant="ghost"
@@ -79,25 +105,41 @@ export function NavActions() {
         </Button>
       </Link>
 
-      {/* Desktop Authentication */}
-      <div className="hidden xl:block">
+      {/* =========================
+          DESKTOP AUTHENTICATION
+      ========================= */}
+
+      <div className="hidden xl:flex xl:items-center xl:gap-2">
         {session ? (
+          /* Logged In */
           <Button
             variant="ghost"
             onClick={() =>
               signOut({
-                callbackUrl: "/login",
+                callbackUrl:
+                  "/login",
               })
             }
           >
             Logout
           </Button>
         ) : (
-          <Link href="/login">
-            <Button variant="ghost">
+          /* Logged Out */
+          <>
+            <Link
+              href="/login"
+              className="inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-gray-100"
+            >
               Login
-            </Button>
-          </Link>
+            </Link>
+
+            <Link
+              href="/register"
+              className="inline-flex h-10 items-center justify-center rounded-md bg-black px-5 text-sm font-semibold !text-white no-underline transition-all duration-200 hover:bg-gray-800 hover:!text-white"
+            >
+              Register
+            </Link>
+          </>
         )}
       </div>
     </div>
