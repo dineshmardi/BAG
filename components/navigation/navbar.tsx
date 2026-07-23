@@ -11,7 +11,8 @@ import { MobileMenu } from "./mobile-menu";
 export function Navbar() {
   return (
     <Container>
-      <div className="flex h-20 items-center gap-3 sm:gap-4 lg:gap-6">
+      <div className="flex h-20 w-full items-center gap-3 sm:gap-4 lg:gap-6">
+
         {/* Logo */}
         <div className="shrink-0">
           <Logo />
@@ -25,13 +26,14 @@ export function Navbar() {
           <SearchBar />
         </Suspense>
 
-        {/* Wishlist / Cart / Login */}
-        <div className="ml-auto shrink-0">
+        {/* Right Side Actions */}
+        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
           <NavActions />
+
+          {/* Tablet / Mobile Menu */}
+          <MobileMenu />
         </div>
 
-        {/* Tablet / Mobile Menu */}
-        <MobileMenu />
       </div>
     </Container>
   );

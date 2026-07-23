@@ -41,7 +41,7 @@ export function NavActions() {
   useEffect(() => {
     if (session) {
       fetchWishlist().catch(
-        () => {}
+        () => { }
       );
     }
   }, [
@@ -109,33 +109,32 @@ export function NavActions() {
           DESKTOP AUTHENTICATION
       ========================= */}
 
+      {/* Authentication */}
       <div className="hidden xl:flex xl:items-center xl:gap-2">
         {session ? (
-          /* Logged In */
           <Button
             variant="ghost"
+            className="px-2 text-xs sm:px-4 sm:text-sm"
             onClick={() =>
               signOut({
-                callbackUrl:
-                  "/login",
+                callbackUrl: "/login",
               })
             }
           >
             Logout
           </Button>
         ) : (
-          /* Logged Out */
           <>
             <Link
               href="/login"
-              className="inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors hover:bg-gray-100"
+              className="inline-flex h-9 items-center justify-center rounded-md px-2 text-xs font-medium transition-colors hover:bg-gray-100 sm:h-10 sm:px-4 sm:text-sm"
             >
               Login
             </Link>
 
             <Link
               href="/register"
-              className="inline-flex h-10 items-center justify-center rounded-md bg-black px-5 text-sm font-semibold !text-white no-underline transition-all duration-200 hover:bg-gray-800 hover:!text-white"
+              className="inline-flex h-9 items-center justify-center rounded-md bg-black px-3 text-xs font-semibold !text-white no-underline transition-all hover:bg-gray-800 hover:!text-white sm:h-10 sm:px-5 sm:text-sm"
             >
               Register
             </Link>
